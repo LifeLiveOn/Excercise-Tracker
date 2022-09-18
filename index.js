@@ -52,6 +52,7 @@ app.post('/api/users', function(req, res){
 app.post('/api/users/:id/exercises', function(req, res){
   const id=req.params.id
   const {description,duration,date} = req.body
+  console.log(req.body)
   User.findById(id,function(err,userData){
     if(err){
       res.send("cant find user")
