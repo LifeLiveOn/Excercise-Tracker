@@ -36,8 +36,9 @@ const Excercise = mongoose.model("Excercise",ExcerciseSchema);
 
 app.post('/api/users', function(req, res){
   const newUser = new User({
-     username: req.body.username
-  })
+     username: req.body.username,
+  },
+  { versionKey: false })
   newUser.save(function(err, data){
     if(err||!data){
       res.send("There was an unexpected error when creating user")
