@@ -38,13 +38,16 @@ app.post('/api/users', function(req, res){
   const newUser = new User({
      username: req.body.username,
   },
-  { versionKey: false })
+  { versionKey: false }) // to disable _v display in mongoDB
   newUser.save(function(err, data){
     if(err||!data){
       res.send("There was an unexpected error when creating user")
     }
     else{
-      res.json(data);
+      res.json({
+        username,
+        _id: data._id
+      });
     }
   })
 })
