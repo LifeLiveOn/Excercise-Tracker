@@ -51,7 +51,9 @@ app.post('/api/users', function(req, res){
 
 app.post('/api/users/:id/exercises', function(req, res){
   const id=req.params.id
-  const {description,duration,date} = req.body
+  const description=req.body.description
+  const duration=req.body.duration
+  const date = req.body.date
   console.log(req.body)
   User.findById(id,function(err,userData){
     if(err){
@@ -69,7 +71,7 @@ app.post('/api/users/:id/exercises', function(req, res){
             username: userData.username,
             description,
             duration,
-            date: date.toDateString(),
+            date: new Date(date).toDateString(),
             _id:userData._id
           }
           
