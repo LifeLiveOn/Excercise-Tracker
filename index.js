@@ -45,7 +45,7 @@ app.post('/api/users', function(req, res){
     }
     else{
       res.json({
-        username,
+        username: data.username,
         _id: data._id
       });
     }
