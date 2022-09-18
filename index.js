@@ -52,7 +52,7 @@ app.post('/api/users', function(req, res){
 app.post('/api/users/:id/exercises', function(req, res){
   const id=req.params.id
   const description=req.body.description
-  const duration=req.body.duration
+  const duration= Parsereq.body.duration
   const date = req.body.date
   console.log(req.body)
   User.findById(id,function(err,userData){
@@ -70,8 +70,8 @@ app.post('/api/users/:id/exercises', function(req, res){
           {
             username: userData.username,
             description,
-            duration,
-            date: new Date(date).toDateString(),
+            duration:Number(duration),
+            date: new Date(date).toDateString(), // to read the function todate string without getting confused
             _id:userData._id
           }
           
