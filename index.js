@@ -56,7 +56,7 @@ app.post('/api/users/:id/exercises', function(req, res){
     if(err){
       res.send("cant find user")
     }else{
-      const newExercise = new Exercise({
+      const newExercise = new Excercise({
         userId: id,
         description: description,
         duration: duration,
