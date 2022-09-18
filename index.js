@@ -49,7 +49,7 @@ app.post('/api/users', function(req, res){
 })
 
 
-app.post('/api/users/:id', function(req, res){
+app.post('/api/users/:id/exercises', function(req, res){
   const id=req.params.id
   const {description,duration,date} = req.body
   User.findById(id,function(err,userData){
