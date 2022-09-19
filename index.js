@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cors())
 app.use(express.static('public'))
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
@@ -52,6 +52,10 @@ app.post('/api/users', function(req, res){
   })
 })
 
+app.get('/api/users/', function(_req, res){
+  const allUser = User.find();
+  res.json(allUser)
+})
 
 app.post('/api/users/:id/exercises', function(req, res){
   const id=req.params.id
