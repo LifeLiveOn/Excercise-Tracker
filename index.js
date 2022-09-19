@@ -50,10 +50,13 @@ app.get('/api/users/:_id/logs',  function(req, res){
     if(count==1){
       username = userData.username
     }
+    if(count>1){
+      username = userData[0].username
+    }
     const log = []
     userData.forEach(function(data){
       log.push({
-        descript:data.description,
+        description:data.description,
         duration: Number(data.duration),
         date: new Date(data.date).toDateString()
       }
