@@ -96,10 +96,12 @@ app.post('/api/users/:id/exercises', function(req, res){
   const duration= req.body.duration
   const date = req.body.date
   console.log(req.body)
-  User.findById(id,function(err,userData){
+  User.findById(id,function(err,userData)
+  {
     if(err){
       res.send("cant find user")
-    }else{
+    }else
+    {
       const newExercise = new Excercise({
         username:userData.username,
         userId: id,
@@ -107,7 +109,8 @@ app.post('/api/users/:id/exercises', function(req, res){
         duration: duration,
         date: new Date(date),
       })
-      newExercise.save(function(err, data){
+      newExercise.save(
+        function(err, data){
         if(err||!data){res.send("cant save")}
         else{
           res.json(
