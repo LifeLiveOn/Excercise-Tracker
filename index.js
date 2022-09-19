@@ -53,9 +53,9 @@ app.post('/api/users', function(req, res){
 })
 
 app.get('/api/users/', function(_req, res){
-  User.find({},function(data){
-    res.json(data)
-  });
+  User.find({}).then(function (users) {
+    res.send(users);
+    });
   
 })
 
