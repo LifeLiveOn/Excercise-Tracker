@@ -35,6 +35,43 @@ const ExcerciseSchema = new Schema({
 const User = mongoose.model("User",userSchema)
 const Excercise = mongoose.model("Excercise",ExcerciseSchema);
 
+
+app.get('/api/users/', function(_req, res){
+  User.find({}).then(function (users) {
+    res.send(users);
+    });
+})
+
+app.get('/api/users/:_id/logs', async function(req, res){
+  await Excercise.find({userId:req.params._id}, function (err, userData) {
+    if(err||!userData) {console.log(err)}
+    const count = userData.length
+    const username = null
+    if(count==1){
+      username = userData.username
+    }
+    const log = []
+    userData.forEach(function(data){
+      log.push({
+        descript:data.description,
+        duration: Number(data.duration),
+        date: new Date(data.date).toDateString()
+      }
+        )
+    })
+    // console.log(userData)
+    // console.log(count)
+      res.json({
+        username: username,
+        count: Number(count),
+        _id: req.params._id,
+        log: log
+      })
+    }
+    );
+})
+
+
 app.post('/api/users', function(req, res){
   const newUser = new User({
      username: req.body.username,
@@ -71,7 +108,9 @@ app.post('/api/users/:id/exercises', function(req, res){
         date: new Date(date),
       })
       newExercise.save(function(err, data){
-        if(err||!data){res.send("cant save")}else{res.json(
+        if(err||!data){res.send("cant save")}
+        else{
+          res.json(
           {
             username: userData.username,
             description,
@@ -86,40 +125,7 @@ app.post('/api/users/:id/exercises', function(req, res){
   })
 })
 
-app.get('/api/users/', function(_req, res){
-  User.find({}).then(function (users) {
-    res.send(users);
-    });
-})
 
-app.get('/api/users/:_id/logs', async function(req, res){
-  await Excercise.find({userId:req.params._id}, function (err, userData) {
-    if(err||!userData) {console.log(err)}
-    const count = userData.length
-    const username = null
-    if(count==1){
-      username = userData.username
-    }
-    const log = []
-    userData.forEach(function(data){
-      log.push({
-        descript:data.description,
-        duration: Number(data.duration),
-        date: new Date(data.date).toDateString()
-      }
-        )
-    })
-    console.log(userData)
-    console.log(count)
-      res.json({
-        username: username,
-        count: Number(count),
-        _id: req.params._id,
-        log: log
-      })
-    }
-    );
-})
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
