@@ -58,8 +58,8 @@ app.get('/api/users/', function(_req, res){
     });
 })
 
-app.get('/api/users/:id/logs',function(req, res){
-  Excercise.find({}), function(err, userData){
+app.get('/api/users/logs',function(req, res){
+  Excercise.find({}).then(function(err, userData){
     // if(err){ console.log(err)}
     // else{
     //   const excerciseArr = []
@@ -79,9 +79,9 @@ app.get('/api/users/:id/logs',function(req, res){
     //     log: [excerciseArr]
     //   })
     // }
-    res.json(userData)
+    res.send(userData)
 
-  }
+  })
 })
 
 app.post('/api/users/:id/exercises', function(req, res){
