@@ -101,7 +101,7 @@ app.post('/api/users/:id/exercises', function(req, res){
   const id=req.params.id
   const description=req.body.description
   const duration= req.body.duration
-  let date = request.body.date;
+  let date = req.body.date;
   console.log("Date as input:", date);
   if (date === "" || date === undefined) {
     date = undefined;
