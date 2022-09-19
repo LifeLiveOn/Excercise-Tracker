@@ -68,9 +68,9 @@ app.get('/api/users/:id/logs', function(req, res){
     })
     const count = userData.length
       res.json({
-        username: userData.username,
+        username: userData[0].username,
         count: Number(count),
-        _id: req.params._id,
+        _id: userData[0].userId,
         log: log
       })
     }
