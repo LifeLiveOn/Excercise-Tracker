@@ -61,14 +61,17 @@ app.get('/api/users/', function(_req, res){
 
 app.get('/api/users/:id/logs', function(req, res){
   console.log(req.params.id)
+  const log = []
   Excercise.find({userId:req.params.id}).then(function ( userData) {
-
+    userData.forEach(function(data){
+      log.push(data.description,data.duration,data.date)
+    })
     const count = userData.length
       res.json({
         username: userData.username,
         count: Number(count),
         _id: req.params._id,
-        log: [userData]
+        log: log
       })
     }
     );
