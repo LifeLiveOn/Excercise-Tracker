@@ -42,8 +42,8 @@ app.get('/api/users/', function(_req, res){
     });
 })
 
-app.get('/api/users/:_id/logs', async function(req, res){
-  await Excercise.find({userId:req.params._id}, function (err, userData) {
+app.get('/api/users/:_id/logs',  function(req, res){
+  Excercise.find({userId:req.params._id}, function (err, userData) {
     if(err||!userData) {console.log(err)}
     const count = userData.length
     const username = null
