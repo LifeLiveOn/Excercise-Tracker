@@ -56,7 +56,30 @@ app.get('/api/users/', function(_req, res){
   User.find({}).then(function (users) {
     res.send(users);
     });
-  
+})
+
+app.get('/api/users/:_id/logs',function(_req, res){
+  User.findById(_req.params._id), function(err,userData){
+    if(err){ console.log("error")}
+    else{
+      const excerciseArr = []
+      const count = 0
+      userData.forEach((exercise)=>{
+        count+=1;
+        excerciseArr.push({
+          description: excercise.description,
+          duration: excercise.duration,
+          date: excercise.date,
+        })
+      });
+      res.json({
+        username: userData.username,
+        count: 1,
+        _id: _req.params._id,
+        log: []
+      })
+    }
+  }
 })
 
 app.post('/api/users/:id/exercises', function(req, res){
