@@ -81,7 +81,7 @@ app.get('/api/users/:id/logs', async function(req, res){
   //     })
   //   }
   // }
-  Excercise.find({}).then(function (users) {
+  Excercise.find({userId:req.params.id}).then(function (users) {
     res.send(users);
     });
 })
