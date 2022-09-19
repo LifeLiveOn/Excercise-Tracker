@@ -84,7 +84,7 @@ app.get('/api/users/:id/logs',function(req, res){
     res.json(data)
 
   }
-}
+})
 
 app.post('/api/users/:id/exercises', function(req, res){
   const id=req.params.id
