@@ -59,7 +59,7 @@ app.get('/api/users/', function(_req, res){
 })
 
 app.get('/api/users/:id/logs',function(req, res){
-  Excercise.find({}).then(function(err, userData){
+  Excercise.find({userId: req.params.id}), function(data) {
     // if(err){ console.log(err)}
     // else{
     //   const excerciseArr = []
@@ -80,8 +80,8 @@ app.get('/api/users/:id/logs',function(req, res){
     //   })
     // }
     console.log(req.params.id)
-    console.log(userData)
-    res.json(userData)
+    console.log(data)
+    res.json(data)
 
   })
 })
