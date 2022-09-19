@@ -58,14 +58,14 @@ app.get('/api/users/', function(_req, res){
     });
 })
 
-app.get('/api/users/:id/logs', async function(req, res){
+app.get('/api/users/:id/logs', function(req, res){
   console.log(req.params.id)
   Excercise.find({userId:req.params.id}).then(function (err,userData) {
     if(err){ console.log(err)}
     else{
       const excerciseArr = []
       const count = 0
-      await userData.forEach((excercise)=>{
+       userData.forEach((excercise)=>{
         count+=1;
         excerciseArr.push({
           description: excercise.description,
