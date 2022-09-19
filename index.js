@@ -65,12 +65,14 @@ app.get('/api/users/:_id/logs',  function(req, res){
     })
     // console.log(userData)
     // console.log(count)
-      res.json({
-        username: username,
-        count: Number(count),
-        _id: req.params._id,
-        log: log
-      })
+    let resposne = {
+      username: username,
+      count: Number(count),
+      _id: req.params._id,
+      log: log
+    }
+    console.log(resposne)
+      res.json(resposne)
     }
     );
     if(user===null){
