@@ -58,7 +58,7 @@ app.get('/api/users/', function(_req, res){
     });
 })
 
-app.get('/api/users/logs',function(req, res){
+app.get('/api/users/:id/logs',function(req, res){
   Excercise.find({}).then(function(err, userData){
     // if(err){ console.log(err)}
     // else{
@@ -79,6 +79,8 @@ app.get('/api/users/logs',function(req, res){
     //     log: [excerciseArr]
     //   })
     // }
+    console.log(req.params.id)
+    console.log(userData)
     res.json(userData)
 
   })
