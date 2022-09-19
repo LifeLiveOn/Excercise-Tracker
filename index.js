@@ -60,10 +60,9 @@ app.get('/api/users/', function(_req, res){
 
 app.get('/api/users/:id/logs', function(req, res){
   console.log(req.params.id)
-  Excercise.find({userId:req.params.id}).then(function (err,userData) {
-    if(err){ console.log(err+"ERRRORORORORO")}
-    else{
-      const count = userData.length()
+  Excercise.find({userId:req.params.id}).then(function ( userData) {
+
+    const count = userData.length()
       res.json({
         username: userData.username,
         count: Number(count),
@@ -71,7 +70,7 @@ app.get('/api/users/:id/logs', function(req, res){
         log: [userData]
       })
     }
-    });
+    );
 })
 
 app.post('/api/users/:id/exercises', function(req, res){
