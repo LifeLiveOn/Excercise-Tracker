@@ -53,7 +53,7 @@ app.post('/api/users', function(req, res){
 })
 
 app.get('/api/users/', function(_req, res){
-  const allUser = User.find({},function(data){
+  User.find({},function(data){
     res.json(data)
   });
   
