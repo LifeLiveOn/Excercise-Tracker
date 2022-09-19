@@ -93,37 +93,30 @@ app.get('/api/users/', function(_req, res){
 })
 
 app.get('/api/users/:id/logs', function(req, res){
-  console.log(req.params.id)
-  const log = []
+  
+  
+  
   Excercise.find({userId:req.params.id}).then(function ( userData) {
+    const count = userData.length
+    const username =userData[0].username
+    if(count==0||count==1){
+      username = userData.username
+    }
+    const log = []
     userData.forEach(function(data){
       log.push({
         descript:data.description,
         duration: Number(data.duration),
-        date: new Date(data.date)
+        date: new Date(data.date).toDateString()
       }
-        
         )
     })
-    const count = userData.length
-    if(count==0||count==1){
-      if(userData.description==null){res.json({})}
       res.json({
-        username: userData.username,
+        username: username,
         count: Number(count),
-        _id: userData.userId,
+        _id: req.params.id,
         log: log
       })
-    }
-    else{
-      res.json({
-        username: userData[0].username,
-        count: Number(count),
-        _id: userData[0].userId,
-        log: log
-      })
-    }
-      
     }
     );
 })
