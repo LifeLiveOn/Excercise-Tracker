@@ -79,7 +79,7 @@ app.get('/api/users/logs',function(req, res){
     //     log: [excerciseArr]
     //   })
     // }
-    res.send(userData)
+    res.json(userData)
 
   })
 })
