@@ -110,6 +110,7 @@ app.get('/api/users/:_id/logs', function(req, res){
         )
     })
     console.log(userData)
+    console.log(count)
       res.json({
         username: username,
         count: Number(count),
