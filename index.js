@@ -62,7 +62,7 @@ app.get('/api/users/:id/logs', function(req, res){
   console.log(req.params.id)
   Excercise.find({userId:req.params.id}).then(function ( userData) {
 
-    const count = userData.length()
+    const count = userData.length
       res.json({
         username: userData.username,
         count: Number(count),
