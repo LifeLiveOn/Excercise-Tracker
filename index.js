@@ -95,8 +95,8 @@ app.get('/api/users/', function(_req, res){
 app.get('/api/users/:_id/logs', function(req, res){
   Excercise.find({userId:req.params._id}).then(function ( userData) {
     const count = userData.length
-    const username =userData[0].username
-    if(count==0||count==1){
+    const username = null
+    if(count==1){
       username = userData.username
     }
     const log = []
