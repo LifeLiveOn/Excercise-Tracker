@@ -66,8 +66,8 @@ app.get('/api/users/:id/logs', function(req, res){
     userData.forEach(function(data){
       log.push({
         descript:data.description,
-        duration:data.duration,
-        date:data.date
+        duration: Number(data.duration),
+        date: new Date(data.date)
       }
         
         )
