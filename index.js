@@ -43,7 +43,8 @@ app.get('/api/users/', function(_req, res){
 })
 
 app.get('/api/users/:_id/logs',  function(req, res){
-  Excercise.find({userId:req.params._id}, function (err, userData) {
+
+  let user = Excercise.find({userId:req.params._id}, function (err, userData) {
     if(err||!userData) {console.log(err)}
     var count = userData.length
     let username = null
@@ -72,6 +73,9 @@ app.get('/api/users/:_id/logs',  function(req, res){
       })
     }
     );
+    if(user===null){
+      res.json("User not found")
+    }return;
 })
 
 
