@@ -136,7 +136,7 @@ app.post('/api/users/:id/exercises', function(req, res){
             username: userData.username,
             description,
             duration:Number(duration),
-            date: new Date(date).toDateString(), // to read the function todate string without getting confused
+            date: date, // to read the function todate string without getting confused
             _id:userData._id
           }
           
