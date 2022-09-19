@@ -92,11 +92,8 @@ app.get('/api/users/', function(_req, res){
     });
 })
 
-app.get('/api/users/:id/logs', function(req, res){
-  
-  
-  
-  Excercise.find({userId:req.params.id}).then(function ( userData) {
+app.get('/api/users/:_id/logs', function(req, res){
+  Excercise.find({userId:req.params._id}).then(function ( userData) {
     const count = userData.length
     const username =userData[0].username
     if(count==0||count==1){
@@ -114,7 +111,7 @@ app.get('/api/users/:id/logs', function(req, res){
       res.json({
         username: username,
         count: Number(count),
-        _id: req.params.id,
+        _id: req.params._id,
         log: log
       })
     }
