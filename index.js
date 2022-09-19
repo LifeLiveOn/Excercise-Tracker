@@ -101,7 +101,18 @@ app.post('/api/users/:id/exercises', function(req, res){
   const id=req.params.id
   const description=req.body.description
   const duration= req.body.duration
-  const date = req.body.date
+  let date = request.body.date;
+  console.log("Date as input:", date);
+  if (date === "" || date === undefined) {
+    date = undefined;
+  } else if (isNaN(Date.parse(date))) {
+    response.json({
+      error: "Date formatted incorrectly"
+    });
+    return;
+  } else {
+    date = new Date(date).toDateString();
+  }
   console.log(req.body)
   User.findById(id,function(err,userData)
   {
