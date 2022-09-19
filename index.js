@@ -60,29 +60,26 @@ app.get('/api/users/', function(_req, res){
 
 app.get('/api/users/:id/logs', async function(req, res){
   console.log(req.params.id)
-  // await Excercise.find({userId: req.params.id}), function(data) {
-  //   if(err){ console.log(err)}
-  //   else{
-  //     const excerciseArr = []
-  //     const count = 0
-  //     userData.forEach((excercise)=>{
-  //       count+=1;
-  //       excerciseArr.push({
-  //         description: excercise.description,
-  //         duration: excercise.duration,
-  //         date: excercise.date,
-  //       })
-  //     });
-  //     res.json({
-  //       username: userData.username,
-  //       count: Number(count),
-  //       _id: _req.params._id,
-  //       log: [excerciseArr]
-  //     })
-  //   }
-  // }
-  Excercise.find({userId:req.params.id}).then(function (users) {
-    res.send(users);
+  Excercise.find({userId:req.params.id}).then(function (err,userData) {
+    if(err){ console.log(err)}
+    else{
+      const excerciseArr = []
+      const count = 0
+      userData.forEach((excercise)=>{
+        count+=1;
+        excerciseArr.push({
+          description: excercise.description,
+          duration: excercise.duration,
+          date: excercise.date,
+        })
+      });
+      res.json({
+        username: userData.username,
+        count: Number(count),
+        _id: _req.params._id,
+        log: [excerciseArr]
+      })
+    }
     });
 })
 
