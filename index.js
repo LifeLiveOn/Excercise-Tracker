@@ -74,7 +74,7 @@ app.get('/api/users/:_id/logs',function(_req, res){
       });
       res.json({
         username: userData.username,
-        count: 1,
+        count: Number(count),
         _id: _req.params._id,
         log: []
       })
