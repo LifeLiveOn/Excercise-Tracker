@@ -59,26 +59,28 @@ app.get('/api/users/', function(_req, res){
 })
 
 app.get('/api/users/:_id/logs',function(_req, res){
-  Excercise.find({userId:_req.params._id}), function(err,userData){
-    if(err){ console.log(err)}
-    else{
-      const excerciseArr = []
-      const count = 0
-      userData.forEach((excercise)=>{
-        count+=1;
-        excerciseArr.push({
-          description: excercise.description,
-          duration: excercise.duration,
-          date: excercise.date,
-        })
-      });
-      res.json({
-        username: userData.username,
-        count: Number(count),
-        _id: _req.params._id,
-        log: [excerciseArr]
-      })
-    }
+  Excercise.find({userId:_req.params._id}), function(err, userData){
+    // if(err){ console.log(err)}
+    // else{
+    //   const excerciseArr = []
+    //   const count = 0
+    //   userData.forEach((excercise)=>{
+    //     count+=1;
+    //     excerciseArr.push({
+    //       description: excercise.description,
+    //       duration: excercise.duration,
+    //       date: excercise.date,
+    //     })
+    //   });
+    //   res.json({
+    //     username: userData.username,
+    //     count: Number(count),
+    //     _id: _req.params._id,
+    //     log: [excerciseArr]
+    //   })
+    // }
+    res.json(userData)
+
   }
 })
 
