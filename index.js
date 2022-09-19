@@ -29,6 +29,7 @@ const ExcerciseSchema = new Schema({
   description:{type:String},
   duration: Number,
   date: Date,
+  username :{type:String}
 })
 
 const User = mongoose.model("User",userSchema)
@@ -84,6 +85,7 @@ app.post('/api/users/:id/exercises', function(req, res){
       res.send("cant find user")
     }else{
       const newExercise = new Excercise({
+        username:userData.username,
         userId: id,
         description: description,
         duration: duration,
