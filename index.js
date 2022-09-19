@@ -46,7 +46,7 @@ app.get('/api/users/:_id/logs',  function(req, res){
   Excercise.find({userId:req.params._id}, function (err, userData) {
     if(err||!userData) {console.log(err)}
     var count = userData.length
-    const username = null
+    let username = null
     if(count==1){
       username = userData.username
     }
