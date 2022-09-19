@@ -64,7 +64,7 @@ app.get('/api/users/:_id/logs',function(_req, res){
     else{
       const excerciseArr = []
       const count = 0
-      userData.forEach((exercise)=>{
+      userData.forEach((excercise)=>{
         count+=1;
         excerciseArr.push({
           description: excercise.description,
@@ -76,7 +76,7 @@ app.get('/api/users/:_id/logs',function(_req, res){
         username: userData.username,
         count: Number(count),
         _id: _req.params._id,
-        log: []
+        log: [excerciseArr]
       })
     }
   }
