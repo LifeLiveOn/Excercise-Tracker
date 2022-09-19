@@ -106,12 +106,23 @@ app.get('/api/users/:id/logs', function(req, res){
         )
     })
     const count = userData.length
+    if(count=1){
+      res.json({
+        username: userData.username,
+        count: Number(count),
+        _id: userData.userId,
+        log: log
+      })
+    }
+    else{
       res.json({
         username: userData[0].username,
         count: Number(count),
         _id: userData[0].userId,
         log: log
       })
+    }
+      
     }
     );
 })
