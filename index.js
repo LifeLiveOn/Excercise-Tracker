@@ -53,6 +53,39 @@ app.post('/api/users', function(req, res){
   })
 })
 
+app.post('/api/users/:id/exercises', function(req, res){
+  const id=req.params.id
+  const description=req.body.description
+  const duration= req.body.duration
+  const date = req.body.date
+  console.log(req.body)
+  User.findById(id,function(err,userData){
+    if(err){
+      res.send("cant find user")
+    }else{
+      const newExercise = new Excercise({
+        username:userData.username,
+        userId: id,
+        description: description,
+        duration: duration,
+        date: new Date(date),
+      })
+      newExercise.save(function(err, data){
+        if(err||!data){res.send("cant save")}else{res.json(
+          {
+            username: userData.username,
+            description,
+            duration:Number(duration),
+            date: new Date(date).toDateString(), // to read the function todate string without getting confused
+            _id:userData._id
+          }
+          
+        )}
+      })
+    }
+  })
+})
+
 app.get('/api/users/', function(_req, res){
   User.find({}).then(function (users) {
     res.send(users);
@@ -81,41 +114,6 @@ app.get('/api/users/:id/logs', function(req, res){
       })
     }
     );
-})
-
-app.post('/api/users/:id/exercises', function(req, res){
-  const id=req.params.id
-  const description=req.body.description
-  const duration= req.body.duration
-  const date = req.body.date
-  console.log(req.body)
-  User.findById(id,function(err,userData){
-    if(err){
-      res.send("cant find user")
-    }else{
-      const newExercise = new Excercise({
-        username:userData.username,
-        userId: id,
-        description: description,
-        duration: duration,
-        date: new Date(date),
-      })
-      newExercise.save(function(err, data){
-        if(err||!data){res.send("cant save")}else{res.json(
-          {
-            username: userData.username,
-            description,
-            duration:Number(duration),
-            date: new Date(date).toDateString(), // to read the function todate string without getting confused
-            _id:userData._id
-          }
-          
-
-        )}
-      })
-    }
-
-  })
 })
 
 const listener = app.listen(process.env.PORT || 3000, () => {
