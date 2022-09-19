@@ -81,6 +81,10 @@ app.get('/api/users/:id/logs', async function(req, res){
   //     })
   //   }
   // }
+  Excercise.find({},function(data){
+    console.log(data)
+    res.json(data)
+  })
 })
 
 app.post('/api/users/:id/exercises', function(req, res){
