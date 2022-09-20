@@ -28,7 +28,7 @@ const ExcerciseSchema = new Schema({
   userId :{type:String,required:true},
   description:{type:String},
   duration: Number,
-  date: Date,
+  date: String,
   username :{type:String}
 })
 
@@ -103,17 +103,18 @@ app.post('/api/users/:id/exercises', function(req, res){
   const id=req.params.id
   const description=req.body.description
   const duration= req.body.duration
-  let date = req.body.date;
-  console.log("Date as input:", date);
-  if (date === "" || date === undefined) {
-    date = undefined;
-  } else if (isNaN(Date.parse(date))) {
-    response.json({
-      error: "Date formatted incorrectly"
-    });
-    return;
-  } else {
-    date = new Date(date).toDateString();
+  var date;
+  if(req.body.date == '' || !req.body.date){
+    // if blank, it will set date as the current date
+    var currentdate = new Date();
+    date = currentdate.toDateString();
+  }else if(new Date(req.body.date) == 'Invalid Date'){
+    // errors out if new date can't be created from provided input.
+    return res.status(400).json({ error: 'Invalid Date' })
+  }else{
+    // else, format input string & set date
+    var currentdate = new Date(req.body.date);
+    date = currentdate.toDateString();
   }
   console.log(req.body)
   User.findById(id,function(err,userData)
@@ -127,7 +128,7 @@ app.post('/api/users/:id/exercises', function(req, res){
         userId: id,
         description: description,
         duration: duration,
-        date: new Date(date),
+        date: date,
       })
       newExercise.save(
         function(err, data){
@@ -138,7 +139,7 @@ app.post('/api/users/:id/exercises', function(req, res){
             username: userData.username,
             description,
             duration:Number(duration),
-            date: date, // to read the function todate string without getting confused
+            date: date, 
             _id:userData._id
           }
           
