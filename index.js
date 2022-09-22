@@ -102,7 +102,7 @@ else{
             }
             else
         {
-                var count = userData.length
+                var count = userLogs.length
                 let username = null
             if(count==1){
                 username = userLogs.username
