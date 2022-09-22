@@ -50,9 +50,8 @@ app.get('/api/users/:_id/logs',  function(req, res){
         try{
             dateFrom = new Date(req.query.from); ////https://stackoverflow.com/questions/17007997/how-to-access-the-get-parameters-after-in-express
             dateTo = new Date(req.query.to)
-            limitData = req.query.limit;
-          console.log(dateFrom,dateTo)
-            
+            limitData = req.query.limit; 
+          console.log(req.query.from)
         }
         catch(e){
             console.log(e)
