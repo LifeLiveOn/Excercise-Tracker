@@ -96,37 +96,37 @@ else{
     try{
         user = Excercise.find({userId:req.params._id,
             date:{$gte: new Date(dateFrom), $lte: new Date(dateTo)}
-        }).limit(Number(limitData)).exec(function(err,userLogs){
+        })exec(function(err,userLogs){
             if(err||!userLogs){
                 res.json(err);
             }
             else
         {
-                var count = userLogs.length
-                let username = null
-            if(count==1){
-                username = userLogs.username
-            }
-            else if (count>1){
-                username = userLogs[0].username
-            }
-            const log = []
-            userLogs.forEach(function(data){
-            log.push({
-                description:data.description,
-                duration: Number(data.duration),
-                date: new Date(data.date).toDateString()})
-            })
-                // console.log(userLogs)
-                // console.log(count)
-            let resposne = {
-                username: username,
-                count: Number(count),
-                _id: req.params._id,
-                log: log
-            }
-            // console.log(resposne)
-            res.json(resposne)
+//                 var count = userLogs.length
+//                 let username = null
+//             if(count==1){
+//                 username = userLogs.username
+//             }
+//             else if (count>1){
+//                 username = userLogs[0].username
+//             }
+//             const log = []
+//             userLogs.forEach(function(data){
+//             log.push({
+//                 description:data.description,
+//                 duration: Number(data.duration),
+//                 date: new Date(data.date).toDateString()})
+//             })
+//                 // console.log(userLogs)
+//                 // console.log(count)
+//             let resposne = {
+//                 username: username,
+//                 count: Number(count),
+//                 _id: req.params._id,
+//                 log: log
+//             }
+//             // console.log(resposne)
+            res.json(userLogs)
         }
         })
     }
