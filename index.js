@@ -43,41 +43,99 @@ app.get('/api/users/', function(_req, res){
 })
 
 app.get('/api/users/:_id/logs',  function(req, res){
-
-  let user = Excercise.find({userId:req.params._id}, function (err, userData) {
-    if(err||!userData) {console.log(err)}
-    var count = userData.length
-    let username = null
-    if(count==1){
-      username = userData.username
+        let dateFrom = null;
+        let dateTo = null;
+        let limitData = null;
+        let user = null;
+        try{
+            dateFrom = req.query.from; ////https://stackoverflow.com/questions/17007997/how-to-access-the-get-parameters-after-in-express
+            dateTo = req.query.to
+            limitData = req.query.limit;
+            
+        }
+        catch(e){
+            console.log(e)
+        }
+if(dateFrom!=null&&dateTo!=null&&limitData!=null){
+     user = Excercise.find({userId:req.params._id}, function (err, userData) {
+        if(err||!userData) {console.log(err)}
+        var count = userData.length
+        let username = null
+        if(count==1){
+          username = userData.username
+        }
+        else if (count>1){
+          username = userData[0].username
+        }
+        const log = []
+        userData.forEach(function(data){
+          log.push({
+            description:data.description,
+            duration: Number(data.duration),
+            date: new Date(data.date).toDateString()
+          }
+            )
+        })
+        // console.log(userData)
+        // console.log(count)
+        let resposne = {
+          username: username,
+          count: Number(count),
+          _id: req.params._id,
+          log: log
+        }
+        // console.log(resposne)
+          res.json(resposne)
+        }
+        );
+        if(user===null){
+          res.json("User not found")
+        }return;
+}
+else{
+    try{
+        user = Excercise.find({userId:req.params._id,
+            date:{$gte: new Date(dateFrom), $lte: new Date(dateTo)}
+        }).limit(Number(limitData)).exec(function(err,userLogs){
+            if(err||!userLogs){
+                res.json(err);
+            }
+            else
+        {
+                var count = userData.length
+                let username = null
+            if(count==1){
+                username = userLogs.username
+            }
+            else if (count>1){
+                username = userLogs[0].username
+            }
+            const log = []
+            userLogs.forEach(function(data){
+            log.push({
+                description:data.description,
+                duration: Number(data.duration),
+                date: new Date(data.date).toDateString()})
+            })
+                // console.log(userLogs)
+                // console.log(count)
+            let resposne = {
+                username: username,
+                count: Number(count),
+                _id: req.params._id,
+                log: log
+            }
+            // console.log(resposne)
+            res.json(resposne)
+        }
+        })
     }
-    else if (count>1){
-      username = userData[0].username
+    catch(error){
+        res.json(error)
     }
-    const log = []
-    userData.forEach(function(data){
-      log.push({
-        description:data.description,
-        duration: Number(data.duration),
-        date: new Date(data.date).toDateString()
-      }
-        )
-    })
-    // console.log(userData)
-    // console.log(count)
-    let resposne = {
-      username: username,
-      count: Number(count),
-      _id: req.params._id,
-      log: log
-    }
-    console.log(resposne)
-      res.json(resposne)
-    }
-    );
-    if(user===null){
-      res.json("User not found")
-    }return;
+    
+}
+  
 })
 
 
