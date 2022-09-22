@@ -55,7 +55,8 @@ app.get('/api/users/:_id/logs',  function(req, res){
         catch(e){
             console.log(e)
         }
-if(dateFrom===null||dateTo===null||limitData===null){
+if(dateFrom==null&&dateTo==null&&limitData==null){
+  console.log("running without query")
      user = Excercise.find({userId:req.params._id}, function (err, userData) {
         if(err||!userData) {console.log(err)}
         var count = userData.length
