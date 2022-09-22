@@ -48,9 +48,10 @@ app.get('/api/users/:_id/logs',  function(req, res){
         let limitData = null;
         let user = null;
         try{
-            dateFrom = req.query.from; ////https://stackoverflow.com/questions/17007997/how-to-access-the-get-parameters-after-in-express
-            dateTo = req.query.to
+            dateFrom = new Date(req.query.from); ////https://stackoverflow.com/questions/17007997/how-to-access-the-get-parameters-after-in-express
+            dateTo = new Date(req.query.to)
             limitData = req.query.limit;
+          console.log(dateFrom,dateTo)
             
         }
         catch(e){
@@ -95,7 +96,7 @@ if(dateFrom==null&&dateTo==null&&limitData==null){
 else{
     try{
         user = Excercise.find({userId:req.params._id,
-            date:{$gte: new Date(dateFrom), $lte: new Date(dateTo)}
+            date:{$gte: dateFrom, $lte: dateTo}
         }).exec(function(err,userLogs){
             if(err||!userLogs){
                 res.json(err);
