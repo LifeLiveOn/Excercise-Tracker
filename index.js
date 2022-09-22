@@ -94,7 +94,7 @@ if(dateFrom==null&&dateTo==null&&limitData==null){
 }
 else{
     try{
-        user = Excercise.find({ date: { $gte: req.query.from, $lte: req.query.to } })
+        user = Excercise.find({ date: { $gte: new Date(req.query.from)} })
           .then(userLogs => {
 //                 var count = userLogs.length
 //                 let username = null
