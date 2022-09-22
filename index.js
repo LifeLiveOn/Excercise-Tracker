@@ -94,14 +94,8 @@ if(dateFrom==null&&dateTo==null&&limitData==null){
 }
 else{
     try{
-        user = Excercise.find({userId:req.params._id,
-            date:{$gte: dateFrom, $lte: dateTo}
-        }).exec(function(err,userLogs){
-            if(err||!userLogs){
-                res.json(err);
-            }
-            else
-        {
+        user = Excercise.find({ date: { $gte: req.query.from, $lte: req.query.to } })
+          .then(userLogs => {
 //                 var count = userLogs.length
 //                 let username = null
 //             if(count==1){
@@ -127,7 +121,7 @@ else{
 //             }
 //             // console.log(resposne)
             res.json(userLogs)
-        }
+
         })
     }
     catch(error){
