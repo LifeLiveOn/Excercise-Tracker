@@ -96,7 +96,7 @@ else{
     try{
         user = Excercise.find({userId:req.params._id,
             date:{$gte: new Date(dateFrom), $lte: new Date(dateTo)}
-        })exec(function(err,userLogs){
+        }).exec(function(err,userLogs){
             if(err||!userLogs){
                 res.json(err);
             }
