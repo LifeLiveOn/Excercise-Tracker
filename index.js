@@ -100,7 +100,7 @@ else{
                 var count = userLogs.length
                 if(dateFrom){
                       const fromDate= new Date(dateFrom)
-                     userLogs = userLogs.filter(exe => new Date(exe.date) > fromDate).;
+                     userLogs = userLogs.filter(exe => new Date(exe.date) > fromDate);
                         }
   
                 if(dateTo){
@@ -113,7 +113,7 @@ else{
           const log = []
           let username = userLogs[0].username
           let id = userLogs[0].userId
-          userLogs.forEach(item => log.push({description:item.description, duration:item.duration, date: item.date,}))
+          userLogs.forEach(item => log.push({description:item.description, duration:item.duration, date: item.date}))
           const response = {
               _id:id,
               username:username,
