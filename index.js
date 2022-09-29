@@ -98,30 +98,27 @@ else{
                                       }
                              }).sort({date:'desc'}).limit(Number(req.query.limit))
           .then(userLogs => {
-          userLogs = userLogs.filter(item => new Date(item.date) < new Date(req.query.to)) // changes here
                 var count = userLogs.length
-                let username = null
-            if(count==1){
-                username = userLogs.username
-            }
-            else if (count>1){
-                username = userLogs[0].username
-            }
-            const log = []
-            userLogs.forEach(function(data){
-            log.push({
-                description:data.description,
-                duration: Number(data.duration),
-                date: new Date(data.date).toDateString()})
-            })
-            let response = {
-                username: username,
-                count: Number(count),
-                _id: req.params._id,
-                log: log
-            }
-          res.json(response);
-//             res.json(userLogs.filter(item => new Date(item.date) < new Date(req.query.to)))
+                if(dateFrom){
+                      const fromDate= new Date(dateFrom)
+                     userLogs = userLogs.filter(exe => new Date(exe.date) > fromDate);
+                        }
+  
+                if(dateTo){
+                      const toDate = new Date(dateTo)
+                      userLogs =userLogs.filter(exe => new Date(exe.date) < toDate);
+                            }
+  
+                 if(limitData){
+                     userLogs =userLogs.slice(0,limit);
+                        }
+          const log = {
+              _id:userLogs['_id'],
+              username:userLogs.username,
+              count:parseFloat(count),
+               log:userLogs
+                       }
+          res.json(log)
         })
     }
     catch(error){
