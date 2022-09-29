@@ -120,6 +120,8 @@ else{
 //                 log: log
 //             }
 //             // console.log(resposne)
+          console.log(req.query.from)
+          console.log(req.query.to)
             res.json(userLogs)
 
         })
