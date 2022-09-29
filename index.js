@@ -95,7 +95,7 @@ else{
     try{
         user = Excercise.find({ date: { $gte: new Date(req.query.from)
                                       }
-                             }).sort({date:'desc'}).limit(Number(req.query.limit))
+                             }).sort({date:'desc'})
           .then(userLogs => {
                 var count = userLogs.length
                 if(dateFrom){
@@ -108,7 +108,7 @@ else{
                       userLogs =userLogs.filter(exe => new Date(exe.date) < toDate);
                             }
                  if(limitData){
-                     userLogs =userLogs.slice(0,limit);
+                     userLogs =userLogs.slice(0,limitData);
                         }
           const log = []
           let username = userLogs[0].username
