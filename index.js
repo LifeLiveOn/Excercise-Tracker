@@ -56,7 +56,6 @@ app.get('/api/users/:_id/logs',  function(req, res){
             console.log(e)
         }
 if(dateFrom==null&&dateTo==null&&limitData==null){
-  console.log("running without query")
      user = Excercise.find({userId:req.params._id}, function (err, userData) {
         if(err||!userData) {console.log(err)}
         var count = userData.length
@@ -101,24 +100,27 @@ else{
                 var count = userLogs.length
                 if(dateFrom){
                       const fromDate= new Date(dateFrom)
-                     userLogs = userLogs.filter(exe => new Date(exe.date) > fromDate);
+                     userLogs = userLogs.filter(exe => new Date(exe.date) > fromDate).;
                         }
   
                 if(dateTo){
                       const toDate = new Date(dateTo)
                       userLogs =userLogs.filter(exe => new Date(exe.date) < toDate);
                             }
-  
                  if(limitData){
                      userLogs =userLogs.slice(0,limit);
                         }
-          const log = {
-              _id:userLogs['_id'],
-              username:userLogs.username,
+          const log = []
+          let username = userLogs[0].username
+          let id = userLogs[0].userId
+          userLogs.forEach(item => log.push({description:item.description, duration:item.duration, date: item.date,}))
+          const response = {
+              _id:id,
+              username:username,
               count:parseFloat(count),
-               log:userLogs
+               log:log
                        }
-          res.json(log)
+          res.json(response)
         })
     }
     catch(error){
