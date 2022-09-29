@@ -122,8 +122,7 @@ else{
 //                 log: log
 //             }
 //             // console.log(resposne)
-            res.json(userLogs)
-
+            res.json(userLogs.filter(item => new Date(item.date) < new Date(req.query.to)))
         })
     }
     catch(error){
