@@ -95,9 +95,8 @@ if(dateFrom==null&&dateTo==null&&limitData==null){
 else{
     try{
         user = Excercise.find({ date: { $gte: new Date(req.query.from)
-                                          ,$lte: new Date(req.query.to)
                                       }
-                             }).sort({ date: 'asc'})  
+                             })
           .then(userLogs => {
 //                 var count = userLogs.length
 //                 let username = null
@@ -123,8 +122,6 @@ else{
 //                 log: log
 //             }
 //             // console.log(resposne)
-          console.log(req.query.from)
-          console.log(req.query.to)
             res.json(userLogs)
 
         })
