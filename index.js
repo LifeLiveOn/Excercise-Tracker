@@ -96,7 +96,7 @@ else{
     try{
         user = Excercise.find({ date: { $gte: new Date(req.query.from)
                                       }
-                             })
+                             }).sort({date:'asc'})
           .then(userLogs => {
 //                 var count = userLogs.length
 //                 let username = null
