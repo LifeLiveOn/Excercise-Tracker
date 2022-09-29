@@ -115,9 +115,9 @@ else{
           let id = userLogs[0].userId
           userLogs.forEach(item => log.push({description:item.description, duration:item.duration, date: item.date}))
           const response = {
+            username:username,  
+            count:parseFloat(count),
               _id:id,
-              username:username,
-              count:parseFloat(count),
                log:log
                        }
           res.json(response)
