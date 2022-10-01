@@ -55,80 +55,39 @@ app.get('/api/users/:_id/logs',  function(req, res){
         catch(e){
             console.log(e)
         }
-if(dateFrom==null&&dateTo==null&&limitData==null){
-     user = Excercise.find({userId:req.params._id}, function (err, userData) {
-        if(err||!userData) {console.log(err)}
-        var count = userData.length
-        let username = null
-        if(count==1){
-          username = userData.username
-        }
-        else if (count>1){
-          username = userData[0].username
-        }
-        const log = []
-        userData.forEach(function(data){
-          log.push({
-            description:data.description,
-            duration: Number(data.duration),
-            date: new Date(data.date).toDateString()
-          }
-            )
-        })
-        // console.log(userData)
-        // console.log(count)
-        let resposne = {
-          username: username,
-          count: Number(count),
-          _id: req.params._id,
-          log: log
-        }
-        // console.log(resposne)
-          res.json(resposne)
-        }
-        );
-        if(user===null){
-          res.json("User not found")
-        }return;
-}
-else{
-    try{
-        user = Excercise.find({ date: { $gte: new Date(req.query.from)
-                                      }
-                             }).sort({date:'desc'})
-          .then(userLogs => {
-                var count = userLogs.length
-                if(dateFrom){
-                      const fromDate= new Date(dateFrom)
-                     userLogs = userLogs.filter(exe => new Date(exe.date) > fromDate);
-                        }
-  
-                if(dateTo){
-                      const toDate = new Date(dateTo)
-                      userLogs =userLogs.filter(exe => new Date(exe.date) < toDate);
-                            }
-                 if(limitData){
-                     userLogs =userLogs.slice(0,limitData);
-                        }
-          const log = []
-          let username = userLogs[0].username
-          let id = userLogs[0].userId
-          userLogs.forEach(item => log.push({description:item.description, duration:item.duration, date: item.date}))
-          const response = {
-            username:username,  
-            count:parseFloat(count),
-              _id:id,
-               log:log
-                       }
-          res.json(response)
-        })
-    }
-    catch(error){
-        res.json(error)
-    }
-    
-}
-  
+  try{
+    user = Excercise.find({userId:req.params._id}, function (err, userLogs) {
+      if (err){console.log(err)}
+      var count = userLogs.length; // get the amount of user exercises.
+      if(dateFrom){
+            const fromDate= new Date(dateFrom)
+           userLogs = userLogs.filter(exe => new Date(exe.date) > fromDate);
+              }
+
+      else if(dateTo){
+            const toDate = new Date(dateTo)
+            userLogs =userLogs.filter(exe => new Date(exe.date) < toDate);
+                  }
+       else if (limitData){
+           userLogs =userLogs.slice(0,limitData);
+              }
+      console.log(userLogs);
+      const log = []
+      let username = userLogs[0].username // get the user name from the data received from query
+      let id = userLogs[0].userId
+      userLogs.forEach(item => log.push({description:item.description, duration:item.duration, date: item.date}))
+      const response = {
+          username:username,  
+          count:parseFloat(count),
+          _id:id,
+          log:log
+             }
+      res.json(response)
+    })
+  }catch(e){
+    res.json(e)
+  } 
+     
 })
 
 
