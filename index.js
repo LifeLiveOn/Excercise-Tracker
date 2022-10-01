@@ -58,7 +58,7 @@ app.get('/api/users/:_id/logs',  function(req, res){
   try{
     user = Excercise.find({userId:req.params._id}, function (err, userLogs) {
       if (err){console.log(err)}
-      var count = userLogs.length; // get the amount of user exercises.
+       
       if(dateFrom){
             const fromDate= new Date(dateFrom)
            userLogs = userLogs.filter(exe => new Date(exe.date) > fromDate);
@@ -77,7 +77,8 @@ app.get('/api/users/:_id/logs',  function(req, res){
       userLogs.forEach(item => log.push({description:item.description, duration:item.duration, date: item.date}))
       const response = {
           username:username,  
-          count:parseFloat(count),
+          // get the amount of user exercises.
+          count:parseFloat(userLogs.length),
           _id:id,
           log:log
              }
