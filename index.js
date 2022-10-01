@@ -28,7 +28,7 @@ const ExcerciseSchema = new Schema({
   userId :{type:String,required:true},
   description:{type:String},
   duration: Number,
-  date: Date,
+  date: String,
   username :{type:String}
 })
 
@@ -43,41 +43,92 @@ app.get('/api/users/', function(_req, res){
 })
 
 app.get('/api/users/:_id/logs',  function(req, res){
-
-  let user = Excercise.find({userId:req.params._id}, function (err, userData) {
-    if(err||!userData) {console.log(err)}
-    var count = userData.length
-    let username = null
-    if(count==1){
-      username = userData.username
+        let dateFrom = null;
+        let dateTo = null;
+        let limitData = null;
+        let user = null;
+        try{
+            dateFrom = req.query.from; ////https://stackoverflow.com/questions/17007997/how-to-access-the-get-parameters-after-in-express
+            dateTo = req.query.to;
+            limitData = req.query.limit; 
+        }
+        catch(e){
+            console.log(e)
+        }
+if(dateFrom==null&&dateTo==null&&limitData==null){
+     user = Excercise.find({userId:req.params._id}, function (err, userData) {
+        if(err||!userData) {console.log(err)}
+        var count = userData.length
+        let username = null
+        if(count==1){
+          username = userData.username
+        }
+        else if (count>1){
+          username = userData[0].username
+        }
+        const log = []
+        userData.forEach(function(data){
+          log.push({
+            description:data.description,
+            duration: Number(data.duration),
+            date: new Date(data.date).toDateString()
+          }
+            )
+        })
+        // console.log(userData)
+        // console.log(count)
+        let resposne = {
+          username: username,
+          count: Number(count),
+          _id: req.params._id,
+          log: log
+        }
+        // console.log(resposne)
+          res.json(resposne)
+        }
+        );
+        if(user===null){
+          res.json("User not found")
+        }return;
+}
+else{
+    try{
+        user = Excercise.find({ date: { $gte: new Date(req.query.from)
+                                      }
+                             }).sort({date:'desc'})
+          .then(userLogs => {
+                var count = userLogs.length
+                if(dateFrom){
+                      const fromDate= new Date(dateFrom)
+                     userLogs = userLogs.filter(exe => new Date(exe.date) > fromDate);
+                        }
+  
+                if(dateTo){
+                      const toDate = new Date(dateTo)
+                      userLogs =userLogs.filter(exe => new Date(exe.date) < toDate);
+                            }
+                 if(limitData){
+                     userLogs =userLogs.slice(0,limitData);
+                        }
+          const log = []
+          let username = userLogs[0].username
+          let id = userLogs[0].userId
+          userLogs.forEach(item => log.push({description:item.description, duration:item.duration, date: item.date}))
+          const response = {
+            username:username,  
+            count:parseFloat(count),
+              _id:id,
+               log:log
+                       }
+          res.json(response)
+        })
     }
-    else if (count>1){
-      username = userData[0].username
+    catch(error){
+        res.json(error)
     }
-    const log = []
-    userData.forEach(function(data){
-      log.push({
-        description:data.description,
-        duration: Number(data.duration),
-        date: new Date(data.date).toDateString()
-      }
-        )
-    })
-    // console.log(userData)
-    // console.log(count)
-    let resposne = {
-      username: username,
-      count: Number(count),
-      _id: req.params._id,
-      log: log
-    }
-    console.log(resposne)
-      res.json(resposne)
-    }
-    );
-    if(user===null){
-      res.json("User not found")
-    }return;
+    
+}
+  
 })
 
 
@@ -103,17 +154,18 @@ app.post('/api/users/:id/exercises', function(req, res){
   const id=req.params.id
   const description=req.body.description
   const duration= req.body.duration
-  let date = req.body.date;
-  console.log("Date as input:", date);
-  if (date === "" || date === undefined) {
-    date = undefined;
-  } else if (isNaN(Date.parse(date))) {
-    response.json({
-      error: "Date formatted incorrectly"
-    });
-    return;
-  } else {
-    date = new Date(date).toDateString();
+  var date;
+  if(req.body.date == '' || !req.body.date){
+    // if blank, it will set date as the current date
+    var currentdate = new Date();
+    date = currentdate.toDateString();
+  }else if(new Date(req.body.date) == 'Invalid Date'){
+    // errors out if new date can't be created from provided input.
+    return res.status(400).json({ error: 'Invalid Date' })
+  }else{
+    // else, format input string & set date
+    var currentdate = new Date(req.body.date);
+    date = currentdate.toDateString();
   }
   console.log(req.body)
   User.findById(id,function(err,userData)
@@ -127,7 +179,7 @@ app.post('/api/users/:id/exercises', function(req, res){
         userId: id,
         description: description,
         duration: duration,
-        date: new Date(date),
+        date: date,
       })
       newExercise.save(
         function(err, data){
@@ -138,7 +190,7 @@ app.post('/api/users/:id/exercises', function(req, res){
             username: userData.username,
             description,
             duration:Number(duration),
-            date: date, // to read the function todate string without getting confused
+            date: date, 
             _id:userData._id
           }
           
@@ -152,4 +204,3 @@ app.post('/api/users/:id/exercises', function(req, res){
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
-})
