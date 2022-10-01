@@ -71,7 +71,6 @@ app.get('/api/users/:_id/logs',  function(req, res){
        else if (limitData){
            userLogs =userLogs.slice(0,limitData);
               }
-      console.log(userLogs);
       const log = []
       let username = userLogs[0].username // get the user name from the data received from query
       let id = userLogs[0].userId
@@ -126,13 +125,13 @@ app.post('/api/users/:id/exercises', function(req, res){
     var currentdate = new Date(req.body.date);
     date = currentdate.toDateString();
   }
-  console.log(req.body)
   User.findById(id,function(err,userData)
   {
     if(err){
       res.send("cant find user")
     }else
     {
+      // create format for Exercises data type(schema)
       const newExercise = new Excercise({
         username:userData.username,
         userId: id,
